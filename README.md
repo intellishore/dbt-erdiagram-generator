@@ -1,0 +1,1 @@
+# dbt-erdiagram-generator
