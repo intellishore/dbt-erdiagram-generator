@@ -22,27 +22,37 @@ def loadModel(catalog_path, schema_path):
     return catalog, schema
 
 
-def createTable(er_file, model):
+def createTable(dbml_path, model):
+    """Create a table in the dbml file. 
+
+    Args:
+        dbml_path (dbml file): The file where to store the table
+        model (dbt model): The dbt model to extract the table and columns from
+    """    
     name = model["metadata"]["name"]
     columns = list(model["columns"].keys())
     start = "{"
     end = "}"
 
-    er_file.write(f"Table {name} {start} \n")
+    dbml_path.write(f"Table {name} {start} \n")
 
-    for column in columns:
-        column = model["columns"][column] 
+    for column_name in columns:
+        column = model["columns"][column_name] 
         name = column["name"]
         dtype = column["type"]
 
-        er_file.write(f"{name} {dtype} \n")
-    er_file.write(f"{end} \n")
+        dbml_path.write(f"{name} {dtype} \n")
+    dbml_path.write(f"{end} \n")
     
     
-def createRelatonship(er_file, schema):
-    tables = []
+def createRelatonship(dbml_path, schema):
+    """Create a relationship in the dbml file. Loops over all columns to find relationship tests and saves them to the dbml file
+
+    Args:
+        dbml_path (dbml file): The file where to store the table
+        schema (dbt schema): The dbt schema to extract relationships from 
+    """    
     for model in schema["models"]:
-        tables.append(model["name"].upper())
         for column in model["columns"]:
             if "tests" in column:
                 tests = column["tests"]
@@ -56,21 +66,26 @@ def createRelatonship(er_file, schema):
                             
                             r2 = model["name"].upper()
                             r2_field = column["name"].upper()
-                            er_file.write(f"Ref: {r1}.{r1_field} > {r2}.{r2_field} \n")
+                            dbml_path.write(f"Ref: {r1}.{r1_field} > {r2}.{r2_field} \n")
                             
 
 
-def genereateERD(schema_path, catalog_path, erd_path):
+def genereatedbml(schema_path, catalog_path, dbml_path):
+    """Create dbml file for a dbt schema
+
+    Args:
+        catalog_path (Path): Path to dbt catalog
+        schema_path (Path): Path to dbt schema
+        dbml_path (Path): Pat to save dbml file 
+    """    
     catalog, schema = loadModel(catalog_path, schema_path)
     model_names = catalog["nodes"]
     
     tables = [model["name"].upper() for model in schema["models"]]
     
-    filename = erd_path
-    
-    with open(filename, "w") as er_file:
+    with open(dbml_path, "w") as dbml_file:
         for model_name in model_names:
             model = catalog["nodes"][model_name]
             if model["metadata"]["name"] in tables: 
-                createTable(er_file, model)        
-        createRelatonship(er_file, schema)
+                createTable(dbml_file, model)        
+        createRelatonship(dbml_file, schema)

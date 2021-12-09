@@ -1,12 +1,6 @@
-# @click.command()
-# @click.argument('schema_path', type=str)
-# @click.argument('catalog_path', type=str)
-# @click.argument('erd_path', type=str)
-# @click.argument('project_name', type=str)
 import click
-from .core import genereateERD
+from .core import genereatedbml
 import subprocess
-import os 
 
 
 @click.command()
@@ -18,7 +12,7 @@ import os
 def cli(schema_path, catalog_path, erd_path, project_name, visualize):
     """"Generate a DBML file from a dbt project and visualize it with dbdocs.io"""
     try:
-        genereateERD(schema_path, catalog_path, erd_path)
+        genereatedbml(schema_path, catalog_path, erd_path)
     except:
         print("The dbml file does not match the required format")
         
