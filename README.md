@@ -12,6 +12,13 @@ There are some great ways to auto generate ERD diagrams. Thus, we just want to b
 ```
 pip install src/
 ```
+
+or direct from git
+
+```
+pip install -U git+https://github.com/intellishore/dbt-erdiagram-generator#subdirectory=src
+```
+
 2. Setup dbdocs cli for diagram creations. [Instructions here](https://dbdocs.io/docs)
 3. Test dbterd with the following command:
 ```
