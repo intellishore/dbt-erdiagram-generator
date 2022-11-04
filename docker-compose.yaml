@@ -1,0 +1,9 @@
+version: '3'
+services:
+  dbterd:
+    restart: always
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
