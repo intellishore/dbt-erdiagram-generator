@@ -16,14 +16,15 @@ pip install src/
 or direct from git
 
 ```
-pip install -U git+https://github.com/intellishore/dbt-erdiagram-generator#subdirectory=src
+pip install -U git+https://github.com/manishmoo/dbt-erdiagram-generator.git#subdirectory=src
 ```
 
 2. Setup dbdocs cli for diagram creations. [Instructions here](https://dbdocs.io/docs)
 3. Test dbterd with the following command:
 ```
-dbterd tests/schema.yml tests/catalog.json test.dbml test True
+dbterd ./target/catalog.json ./models ./seeds test.dbml True
 ```
+
 # Usage
 To use this packages on your own project run *dbterd* with the following parameters in order: 
 
