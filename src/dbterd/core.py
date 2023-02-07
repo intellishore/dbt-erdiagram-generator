@@ -66,7 +66,7 @@ def createRelatonship(dbml_path, schema):
                             
                             r2 = model["name"].upper()
                             r2_field = column["name"].upper()
-                            dbml_path.write(f"Ref: {r1}.{r1_field} > {r2}.{r2_field} \n")
+                            dbml_path.write(f"Ref: {r2}.{r2_field} > {r1}.{r1_field} \n")
                             
 
 
